@@ -8,6 +8,7 @@ def blog_view(request):
      return render(request,'blog/blog-home.html',context)
 
 def blog_single(request,pid):
+     posts = Post.objects.filter(status=1)
      post = get_object_or_404(Post,pk=pid)
      context = {'post':post}
      return render(request,'blog/blog-single.html',context)
@@ -21,8 +22,18 @@ def blog_single(request,pid):
      context = {'posts':posts}
      return render(request,'test.html',context) """
 
-def test(request,pid):
+""" def test(request,pid):
      #post = Post.objects.get(id=pid)
      post = get_object_or_404(Post,pk=pid)
      context = {'post':post}
-     return render(request,'test.html',context)
+     return render(request,'test.html',context) """
+
+def test(request):
+     return render(request,'test.html')
+
+def blog_category(request,cat_name):
+     posts = Post.objects.filter(status=1)
+     posts = posts.filter(category__name=cat_name)
+     context = {'posts':posts}
+     return render(request,'blog/blog-home.html',context)
+
