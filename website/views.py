@@ -1,7 +1,8 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse,JsonResponse
 from website.models import Contact
-from website.forms import ContactForm, NewsletterForm
+from website.forms import NameForm ,ContactForm, NewsletterForm
 from django.contrib import messages
 
 def index_view(request):
@@ -38,5 +39,12 @@ def newsletter_view(request):
 
 def test_view(request):
     if request.method == 'POST':
-       print(request.POST.get('name'))
-    return render(request, 'test.html',{})
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('done')
+        else:
+            return HttpResponse('not valid')
+    
+    form = ContactForm()
+    return render(request,'test.html',{'form':form})
